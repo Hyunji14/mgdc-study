@@ -3,18 +3,34 @@ import styles from "./App.module.css";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [counter, setValue] = useState(0);
-  const onClick = () => setValue((prev) => prev + 1);
-  console.log("I run all the time");
-  useEffect(() => {
-    console.log("Call the API...");
-  }, []);
+  const [toDo, setTodo] = useState("");
+  const [toDos, setTodos] = useState([]);
+  const onChange = (e) => {
+    setTodo(e.target.value);
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(toDo);
+    if (toDo === "") {
+      return;
+    }
+    // cannot do toDos.push() since we can't modify the state direclty
+    setTodos((currentArr) => [toDo, ...currentArr]);
+    setTodo("");
+    console.log(toDos);
+  };
   return (
     <div>
-      <h1>{counter}</h1>
-      <button onClick={onClick}>Click here</button>
-
-      {/* <Button onClick={onClick} text={"Continue"} /> */}
+      <h1>My Todos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={toDo}
+          type="text"
+          placeholder="Write your to do..."
+        />
+        <button>Add todo list</button>
+      </form>
     </div>
   );
 }
