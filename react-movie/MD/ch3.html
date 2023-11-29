@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+    // let counter = 1;
+    // function countUp() {
+    //   // code
+    //   console.log("hi it's a function");
+    //   counter += 1;
+    // }
+
+    function App() {
+      //   const [counter, modifier] = React.useState(counter, countUp()); // returns an array of [undefined, f]
+      const [counter, modifier] = React.useState(0);
+      const onClick = () => {
+        // modifier(counter + 1);
+        modifier((current) => current + 1); // more safe way
+      };
+      return (
+        <div>
+          <h3>Total clicks: {counter}</h3>
+          <button onClick={onClick}>Hello</button>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
+
+    const food = ["rice", "corn"];
+    const [first, second] = food;
+    console.log(first, second); // assigned name printed.
+  </script>
+</html>
