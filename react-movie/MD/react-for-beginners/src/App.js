@@ -1,41 +1,32 @@
-import Button from "./button";
-import styles from "./App.module.css";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [toDo, setTodo] = useState("");
-  const [toDos, setTodos] = useState([]);
-  const onChange = (e) => {
-    setTodo(e.target.value);
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log(toDo);
-    if (toDo === "") {
-      return;
-    }
-    // cannot do toDos.push() since we can't modify the state direclty
-    setTodos((currentArr) => [toDo, ...currentArr]);
-    setTodo("");
-  };
+  const [loading, setLoading] = useState(true);
+  // make sure to give default values to useState() to prevent further errors ?
+  // esp. when loading state.length like the below.
+  const [coins, setCoins] = useState([]);
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+      });
+  }, []);
   return (
     <div>
-      <h1>My Todos ({toDos.length})</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          onChange={onChange}
-          value={toDo}
-          type="text"
-          placeholder="Write your to do..."
-        />
-        <button>Add todo list</button>
-      </form>
-      <hr />
-      <ul>
-        {toDos.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+      <h1>The Coins! ! ! {loading ? "" : `(${coins.length})`}</h1>
+      {loading ? (
+        <strong>Loading. . .</strong>
+      ) : (
+        <select>
+          {coins.map((coin) => (
+            <option>
+              {coin.name} ({coin.symbol}): {coin.quotes.USD.price} USD
+            </option>
+          ))}
+        </select>
+      )}
     </div>
   );
 }
