@@ -17,7 +17,6 @@ function App() {
     // cannot do toDos.push() since we can't modify the state direclty
     setTodos((currentArr) => [toDo, ...currentArr]);
     setTodo("");
-    console.log(toDos);
   };
   return (
     <div>
@@ -31,6 +30,12 @@ function App() {
         />
         <button>Add todo list</button>
       </form>
+      <hr />
+      <ul>
+        {toDos.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
